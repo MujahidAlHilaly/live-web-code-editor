@@ -1,6 +1,30 @@
-document.getElementById("htmlCode").value="<div>\n\n</div>";
-document.getElementById("cssCode").value="<style>\n\n</style>";
-document.getElementById("jsCode").value="<script>\n\n</script>";
+document.addEventListener('DOMContentLoaded', (event) => {
+    // Load saved code from localStorage if available, otherwise initialize default values for the textareas
+    if(localStorage.getItem("htmlCode")) {
+       document.getElementById("htmlCode").value = localStorage.getItem("htmlCode");
+    }else{
+        document.getElementById("htmlCode").value = "<div>\n\n</div>";
+    }
+    if(localStorage.getItem("cssCode")) {
+        document.getElementById("cssCode").value = localStorage.getItem("cssCode");
+    }else{
+        document.getElementById("cssCode").value = "<style>\n\n</style>";
+    }
+    if(localStorage.getItem("jsCode")) {
+        document.getElementById("jsCode").value = localStorage.getItem("jsCode");
+    }else{
+        document.getElementById("jsCode").value = "<script>\n\n</script>";
+    }
+    // Show the preview based on the loaded code
+    showPreview();
+});
+
+// Function to save code to localStorage
+function saveCode() {
+    localStorage.setItem("htmlCode", document.getElementById("htmlCode").value);
+    localStorage.setItem("cssCode", document.getElementById("cssCode").value);
+    localStorage.setItem("jsCode", document.getElementById("jsCode").value);
+}
 
 function showPreview(){
     var htmlCode = document.getElementById("htmlCode").value;
@@ -10,6 +34,9 @@ function showPreview(){
     frame.open();
     frame.write(htmlCode+cssCode+jsCode);
     frame.close();
+
+    // since this function is called whenever the code is updated, we save code to localStorage
+    saveCode();
 }
 
 function show(x){
